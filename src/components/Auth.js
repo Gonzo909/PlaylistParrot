@@ -28,8 +28,14 @@ const Auth = ({ onLogin }) => {
     }, [onLogin]);
 
     return ( 
-        <div>
-            <button onClick={handleSpotifyLogin}>Login with Spotify</button>
+        <div className="mb-4">
+            <button 
+                onClick={handleSpotifyLogin}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                Login with Spotify
+            </button>
         </div>
     )
 }
+
+export default Auth;
