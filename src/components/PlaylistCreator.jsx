@@ -1,8 +1,9 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const PlaylistCreator = ({ playlistData }) => {
-    const [youtubePlaylistid, setYoutubePlaylistId] = useState('');
+    const [youtubePlaylistId, setYoutubePlaylistId] = useState('');
 
     const handleCreatePlaylist = () => {
         const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
@@ -35,5 +36,13 @@ const PlaylistCreator = ({ playlistData }) => {
         </div>
     );
 }
+
+PlaylistCreator.propTypes = {
+    playlistData: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+  
 
 export default PlaylistCreator;

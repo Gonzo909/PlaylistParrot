@@ -1,5 +1,6 @@
 import React from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
+import PropTypes from 'prop-types';
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -37,5 +38,9 @@ const Auth = ({ onLogin }) => {
         </div>
     )
 }
+
+Auth.propTypes = {
+    onLogin: PropTypes.func.isRequired,
+}; 
 
 export default Auth;

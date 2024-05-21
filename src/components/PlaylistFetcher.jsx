@@ -1,5 +1,6 @@
 import React from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
+import PropTypes from 'prop-types';
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -43,10 +44,15 @@ const PlaylistFetcher = ({ onFetch }) => {
             {playlistData && (
                 <pre className="bg-gray-200 p-4 rounded mt-4 w-full">
                     {JSON.stringify(playlistData, null, 2)}
+                    {console.log(playlistData)};
                 </pre>
             )}
         </div>
     );
+};
+
+PlaylistFetcher.propTypes = {
+    onFetch: PropTypes.func.isRequired,
 };
 
 export default PlaylistFetcher;
