@@ -6,25 +6,26 @@ const spotifyApi = new SpotifyWebApi();
 
 const PlaylistFetcher = ({ onFetch }) => {
     const [playlistUrl, setPlaylistUrl] = React.useState('');
-    const [playlistData, setPlaylistData] = React.useState(null);
+    const [playlistTracks, setPlaylistTracks] = React.useState(null);
+
+    const extractPlaylistId = (url) => {
+        const match = url.match(/playlist\/([a-zA-Z0-9]+)/);
+        return match ? match[1] : url;
+    };
 
     const handleFetchPlaylist = () => {
         const playlistId = extractPlaylistId(playlistUrl);
-        spotifyApi.getPlaylist(playlistId).then(
-            function(data) {
-                setPlaylistData(data);
-                onFetch(data);
-            },
-            function(err) {
-                console.error(err);
-            }
-        );
-    };
-
-    const extractPlaylistId = (url) => {
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    };
+        spotifyApi.getPlaylistTracks(playlistId).then(data => {
+            const tracks = data.items.map(item => ({
+                name: item.track.name,
+                artist: item.track.artists.map(artist => artist.name).join(', ')
+            }));
+            setPlaylistTracks(tracks);
+            onFetch(tracks);
+        }).catch(error => {
+            console.error(error);
+            });
+        };
 
     return (
         <div className="mb-4 w-full">
@@ -33,7 +34,7 @@ const PlaylistFetcher = ({ onFetch }) => {
             value={playlistUrl}
             onChange={(e) => setPlaylistUrl(e.target.value)}
             placeholder="Enter a Spotify playlist URL"
-            className="border p-2 rounded w-full"
+            className="mb-2 p-2 border rounded w-full"
             />
             <button
                 onClick={handleFetchPlaylist}
@@ -41,12 +42,19 @@ const PlaylistFetcher = ({ onFetch }) => {
                 >
                 Fetch Playlist
             </button>
-            {playlistData && (
-                <pre className="bg-gray-200 p-4 rounded mt-4 w-full">
-                    {JSON.stringify(playlistData, null, 2)}
-                    {console.log(playlistData)};
-                </pre>
-            )}
+            <div className="mt-4">
+                <h2 className="text-lg font-semibold">
+                    Playlist Tracks
+                </h2>
+                <ul>
+                    {playlistTracks.map((track, index) => (
+                        <li key={index}>
+                            <strong>{track.name}</strong> - {track.artist}
+                        </li>
+                    ))}
+                </ul>
+
+            </div>
         </div>
     );
 };
