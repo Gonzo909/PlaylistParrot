@@ -49,5 +49,4 @@ const PlaylistFetcher = ({ onFetch }) => {
     );
 };
 
-
 export default PlaylistFetcher;
